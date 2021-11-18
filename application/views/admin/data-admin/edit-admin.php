@@ -1,44 +1,38 @@
-    <style type="text/css">
-    .btn-file {
-        position: relative;
-        overflow: hidden;
-    }
-    .d-none{
-        display: none !important;
-    }
-    .btn-file input[type=file] {
-        position: absolute;
-        top: 0;
-        right: 0;
-        min-width: 100%;
-        min-height: 100%;
-        font-size: 100px;
-        text-align: right;
-        filter: alpha(opacity=0);
-        opacity: 0;
-        outline: none;
-        background: white;
-        cursor: inherit;
-        display: block;
+	<style type="text/css">
+
+    #upload {
+      opacity: 0;
     }
 
-    #img-upload{
-        width: 100%;
-        background: white;
+    #upload-label {
+      position: absolute;
+      top: 50%;
+      left: 1rem;
+      transform: translateY(-50%);
     }
 
-    .cropit-preview {
-      background-color: #f8f8f8;
-      background-size: cover;
-      border: 1px solid #ccc;
-      border-radius: 3px;
-      margin-top: 7px;
-      width: 502px;
-      height: 453px;
+    .image-area {
+      border: 2px dashed rgba(255, 255, 255, 0.7);
+      padding: 1rem;
+      position: relative;
     }
 
-    .cropit-preview-image-container {
-      cursor: move;
+    .image-area::before {
+      content: '';
+      color: #fff;
+      font-weight: bold;
+      text-transform: uppercase;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 0.8rem;
+      z-index: 1;
+    }
+
+    .image-area img {
+      z-index: 2;
+      position: relative;
     }
 
     .center {
@@ -49,16 +43,6 @@
 
     .mt-5{
       margin-top: 5px;
-    }
-
-    .modal-dialog{
-      margin-top: 10px;
-      margin-bottom: 0px;
-    }
-
-    .viewer-img{
-      background: white;
-      height: 373px;
     }
 
     .text-deskripsi{
@@ -82,7 +66,7 @@
     }
 </style>
 
- <?php  
+<?php  
     $optional = [];
     $optional['select'] = "";
     $where["field"][0] = "id";
@@ -97,170 +81,137 @@
     $data = $this->modeladmin->ambil_data("admin_admin",$optional); 
 ?>
 
+
     <div class="image-editor">
         <div class="single-product-tab-area mg-t-15 mg-b-30">
             <div class="container-fluid">
-                <form action="<?php echo(base_url())?>admin/tambah-data" method="POST" enctype="multipart/form-data">
+                <form action="<?php echo(base_url())?>admin/ubah-data" method="POST" enctype="multipart/form-data">
                     <div class="row">
                         <input type="hidden" name="jenis" id="jenis" value="admin">
-                        <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <span class="input-group-btn">
-                                        <span class="btn btn-default btn-file">
-                                          Pilih Photo Profile 
-                                          <input type="file" id="imgInp" name="image" class="cropit-image-input">
-                                        </span                                    </span>
-                                    <input type="text" class="form-control" readonly>
-                                </div>
-                                <input type="text" name="nama_photo" class="form-control d-none" id="idphoto">
-                                <img id='img-upload' class="viewer-img" src="<?php echo base_url() ?>gambar/admin/<?php echo $data[0]["photo"] ?>" />
-                            </div>
+                        <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12 mx-auto" style="height: 400px;background: #f66;">
+                              <!-- Upload image input-->
+                              <div class="input-group mb-3 px-2 py-2 rounded-pill bg-white shadow-sm btn-success" style="width: 100%">
+                                <input id="upload" type="file" onchange="readURL(this);" value = "<?php echo base_url() ?>gambar/admin/<?php echo $data[0]['photo'] ?>" name="photo" class="form-control border-0">
+                                <label id="upload-label" for="upload" class="font-weight-light text-muted" style="width: 100%;text-align: center;">Pilih Photo Profile Dengan Ukuran 780 x 900</label>
+                              </div>
+                              <div class="image-area mt-4" style="text-align: center;"><img id="imageResult" src="#" alt="" class="img-fluid rounded shadow-sm mx-auto d-block" style="max-width: 100%;height: 320px;"></div>
                         </div>
                         <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">
                             <div class="row">
-                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                    <div class="single-pro-size">
-                                        <h6>Nama</h6>
-                                        <div class="form-group">
-                                            <input type="text" placeholder="Masukan Nama" name="nama" class="form-control">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                     <div class="single-pro-size">
                                         <h6>Username</h6>
                                         <div class="form-group">
-                                            <input type="text" placeholder="Masukan Username" name="username" class="form-control">
+                                            <input type="text" placeholder="Masukan Username" value = "<?php echo $data[0]['username'] ?>" name="username" class="form-control">
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                     <div class="single-pro-size">
-                                        <h6>Nomor Handphone</h6>
+                                        <h6>Nama</h6>
                                         <div class="form-group">
-                                            <input type="text"  data-mask="089-999-999-999" placeholder="09X-XXX-XXX-XXX" name="handphone"  class="form-control">
+                                            <input type="text" placeholder="Masukan Nama" value = "<?php echo $data[0]['nama'] ?>" name="nama" id="namaGambar" class="form-control">
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                     <div class="single-pro-size">
-                                        <h6>Role</h6>
+                                        <h6>Jabatan</h6>
                                         <div class="form-group">
-                                            <select class="form-control" name="role">
-                                                <option value="1">Admin</option>
-                                                <option value="2">Super Admin</option>
-                                                <option value="3">User</option>
+                                            <select class="form-control" name="jabatan">
+                                              <?php  
+                                                $optional = [];
+                                                $optional['select'] = "";
+                                                $where["field"][0] = "untuk";
+                                                $where["velue"][0] = 4; 
+                                                $optional['where'] = $where;
+                                                $optional['search'] = "";
+                                                $optional['distinct'] = "";
+                                                $optional['join'] = "";
+                                                $optional['order_by'] = "";
+                                                $optional['limit'] = "";
+                                                $optional['offset'] = "";
+                                                $data = $this->modeladmin->ambil_data("web_kategori",$optional); 
+                                                for($i = 0; $i < count($data); $i++){
+                                            ?>
+                                                <option value="<?php echo $data[$i]['nama'] ?>"><?php echo $data[$i]['nama'] ?></option>
+                                              <?php } ?>
                                             </select>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                     <div class="single-pro-size">
-                                        <h6>Catatan</h6>
-                                        <div class="form-group">
-                                            <textarea placeholder="Catatan Admin" name="catatan" class="form-control text-deskripsi"></textarea> 
+                                        <h6>Aktif</h6>
+                                        <div class="rows">
+                                          <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 form-check">
+                                            <input class="form-check-input" type="radio" id="aktif"  name="aktif" value="1" checked>
+                                            <label class="form-check-label" for="aktif">
+                                              Aktif
+                                            </label>
+                                          </div>
+                                          <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 form-check">
+                                            <input class="form-check-input" type="radio" id="tidak-aktif" name="aktif" value="0">
+                                            <label class="form-check-label" for="tidak-aktif">
+                                              Tidak
+                                            </label>
+                                          </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <button type="submit" class="btn btn-success col-lg-12 col-md-12 col-sm-12 col-xs-12">Simpan Data</button>
-                                </div>
                             </div>
+                        </div>
+
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="single-pro-size">
+                                <h6>Catatan</h6>
+                                <textarea class="summernote form-control" rows="100" name="catatan" value = "<?php echo $data[0]['catatan'] ?>" ></textarea>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <button type="submit" class="btn btn-success col-lg-12 col-md-12 col-sm-12 col-xs-12">Simpan Data</button>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
 
-        <div class="modal" tabindex="-1" role="dialog" id="cropit">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content mt-40">
-              <div class="modal-header p-7">
 
-<!--                 
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
- -->
-              </div>
-              <div class="modal-body pb-0">
-                  <div class="cropit-preview center"></div>
-                  <div class="row mt-4 center">
-                    <dir class="col-md-3 col-lg-3 col-sm-3 text-right m-0">
-                      <i class="fas fa-undo rotate-ccw"></i>
-                    </dir>
-                    <dir class="col-md-6 col-lg-6 col-sm-6 mt-5 mb-0">
-                      <input type="range" class="cropit-image-zoom-input center">
-                    </dir>
-                    <dir class="col-md-3 col-lg-3 col-sm-3 text-left m-0">
-                      <i class="fas fa-redo rotate-cw"></i>
-                    </dir>                    
-                  </div>
-              </div>
-              <div class="modal-footer p-7">
-                <button type="button" class="btn btn-primary export">Save changes</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              </div>
-            </div>
-          </div>
-        </div>
-    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
 
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+   
     <script type="text/javascript">
     $(document).ready( function() {
-        $(document).on('change', '.btn-file :file', function() {
-            var input = $(this),
-                label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
-            input.trigger('fileselect', [label]);
-        });
-        $('.btn-file :file').on('fileselect', function(event, label) {
-            $('#cropit').modal('show');            
-            var input = $(this).parents('.input-group').find(':text'),
-                log = label;
-            if( input.length ) {
-                input.val(log);
-            } else {
-                if( log ) alert(log);
-            }
-        });
-    });
+      function readURL(input) {
+          if (input.files && input.files[0]) {
+              var reader = new FileReader();
 
+              reader.onload = function (e) {
+                  $('#imageResult')
+                      .attr('src', e.target.result);
+              };
+              reader.readAsDataURL(input.files[0]);
+          }
+      }
 
-      $(function() {
-        $('.image-editor').cropit({
-          imageState: {
-            src: 'http://lorempixel.com/200/100/',
-          },
-        });
-
-        $('.rotate-cw').click(function() {
-          $('.image-editor').cropit('rotateCW');
-        });
-        $('.rotate-ccw').click(function() {
-          $('.image-editor').cropit('rotateCCW');
-        });
-
-        $('.export').click(function() {
-          var jenis = document.getElementById("jenis").value;
-          var imageData = $('.image-editor').cropit('export');
-          $.post( "<?php echo(base_url())?>admin/simpan-gambar", { jenis: jenis, gambar: imageData, gambarsebelumnya : $('#idphoto').val() }, function( data ) { 
-            $('#img-upload').attr('src', "<?php echo base_url() ?>gambar/"+jenis+"/" + data );
-            $('#idphoto').val(data);
-            $('#cropit').modal('hide');            
+      $(function () {
+          $('#upload').on('change', function () {
+              readURL(input);
           });
-        });
       });
 
+      /*  ==========================================
+          SHOW UPLOADED IMAGE NAME
+      * ========================================== */
+      var input = document.getElementById( 'upload' );
+      var infoArea = document.getElementById( 'upload-label' );
 
-    $(".add-more").click(function(){ 
-        var html = $(".copy").html();  
-        $(".stage").after(html);
-      });
+      input.addEventListener( 'change', showFileName );
+      function showFileName( event ) {
+        var input = event.srcElement;
+        var fileName = input.files[0].name;
+        infoArea.textContent = 'File name: ' + fileName;
+      }
+    });
+    </script>
 
-      $("body").on("click",".remove",function(){ 
-          $(this).parents(".form-group").remove();
-      });
-      
-</script>

@@ -79,9 +79,9 @@
                                     <a href="<?php echo base_url()?>admin/data-admin/data-lengkap-admin/<?php echo $data[$i]['id'] ?>" class="lihat">
                                         <i class="fas fa-eye"></i>   
                                     </a>
-                                    <!-- <a href="<?php echo base_url()?>admin/data-admin/edit-admin/<?php echo $data[$i]['id'] ?>" class="edit">
+                                    <a href="<?php echo base_url()?>admin/data-admin/edit-admin/<?php echo $data[$i]['id'] ?>" class="edit">
                                         <i class="fas fa-edit"></i>   
-                                    </a> -->
+                                    </a>
                                     <a onclick="hapus('<?php echo $data[$i]['nama'] ?>', '<?php echo $data[$i]['id'] ?>', '<?php echo $data[$i]['photo'] ?>')" class="hapus">
                                         <i class="fas fa-trash-alt"></i>   
                                     </a>

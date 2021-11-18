@@ -329,12 +329,16 @@ class Admin extends CI_Controller {
 
 			if ($jenis ==  "admin"){
 		        $data_insert = array(
-		            'nama' => $this->input->post('nama'),
-		            'username' => $this->input->post('username'),
-		            'photo' => $this->input->post('nama_photo'),
-		            'nomor_telepone' => $this->input->post('handphone'),
-		            'role' => $this->input->post('role'),
-		            'catatan' => $this->input->post('catatan')
+		        'nama' 				=> $this->input->post('nama'),
+	            'username' 			=> $this->input->post('username'),
+	            'photo' 			=> $url.".jpg",
+	            'jabatan' 			=> $this->input->post('jabatan'),
+	            'aktif' 			=> $this->input->post('aktif'),
+	            'catatan'		 	=> $this->input->post('catatan'),
+	            'link'		 		=> $url,
+	            'slider'		 	=> $data[0]["gambar"],
+	            'slider_potrait'	=> $data[0]["gambar_potrait"],
+	            'password'			=> "test1234"
 		        );
 			}
 
